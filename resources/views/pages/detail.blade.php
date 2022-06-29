@@ -25,71 +25,51 @@
             <div class="row">
                 <div class="col-lg-8 pl-lg-0">
                     <div class="card card-details">
-                        <h1>Nusa Penida</h1>
-                        <p>Republic of Indonesia </p>
+                        <h1>{{$item->title}}</h1>
+                        <p>{{$item->location}} </p>
+                        @if($item->galleries->count())
                         <div class="gallery">
                             <div class="xzoom-container">
-                                <img src="frontend/image/Mask Group 15.jpg" class="xzoom" id="xzoom-default"
-                                    xoriginal="frontend/image/Mask Group 15.jpg">
+                                <img src="{{Storage::url($item->galleries->first()->image ) }}" class="xzoom" id="xzoom-default"
+                                    xoriginal="{{Storage::url($item->galleries->first()->image ) }}">
                             </div>
                             <div class="xzoom-thumbs">
-                                <a href="frontend/image/Mask Group 15.jpg">
-                                    <img src="frontend/image/Mask Group 15.jpg" class="xzoom-gallery" width="128"
-                                        xpreview="frontend/image/Mask Group 15.jpg">
-                                </a>
-                                <a href="frontend/image/Mask Group 15.jpg">
-                                    <img src="frontend/image/Mask Group 15.jpg" class="xzoom-gallery" width="128"
-                                        xpreview="frontend/image/Mask Group 15.jpg">
-                                </a>
-                                <a href="frontend/image/Mask Group 15.jpg">
-                                    <img src="frontend/image/Mask Group 15.jpg" class="xzoom-gallery" width="128"
-                                        xpreview="frontend/image/Mask Group 15.jpg">
-                                </a>
-                                <a href="frontend/image/Mask Group 15.jpg">
-                                    <img src="frontend/image/Mask Group 15.jpg" class="xzoom-gallery" width="128"
-                                        xpreview="frontend/image/Mask Group 15.jpg">
-                                </a>
-                                <a href="frontend/image/Mask Group 15.jpg">
-                                    <img src="frontend/image/Mask Group 15.jpg" class="xzoom-gallery" width="128"
-                                        xpreview="frontend/image/Mask Group 15.jpg">
-                                </a>
+                                @foreach ($item->galleries as $gallery)
+                                <a href="{{ Storage::url($gallery->image) }}">
+                                    <img src="{{ Storage::url($gallery->image) }}" class="xzoom-gallery" width="128"
+                                        xpreview="{{ Storage::url($gallery->image) }}">
+                                </a> 
+                                @endforeach
                             </div>
                         </div>
+                        @endif
+                        
                         <h2>Tentang Wisata</h2>
                         <p>
-                            Nusa Penida is an island southeast of Indonesia's island Bali and a district of Klungkung
-                            Regency that includes the neighbouring small island of Nusa Lembongan and twelve even
-                            smaller islands. The Badung Strait separates the island and Bali.
-                        </p>
-                        <p>
-                            The interior of Nusa Penida is hilly with a maximum altitude of 524 metres. It is drier than
-                            the
-                            nearby island of Bali. It is one of the major tourist attractions among the three Nusa
-                            islands
-                            and is rich in natural beauty.
+                            {{!! $item->about !!}}
                         </p>
                         <div class="features row">
                             <div class="col-md-4">
-                                <img src="frontend/image/Group 18.png" alt="" class="features-image">
+                                <img src="{{url('frontend/image/Group 18.png')}}" alt="" class="features-image">
                                 <div class="description">
                                     <h3>Featured Event</h3>
-                                    <p>Bahasa Indonesia</p>
+                                    <p>{{$item->featured_event}}</p>
                                 </div>
                             </div>
                             <div class="col-md-4 border-left">
 
-                                <img src="frontend/image/Group 22.png" alt="" class="features-image">
+                                <img src="{{url('frontend/image/Group 22.png')}}" alt="" class="features-image">
                                 <div class="description">
                                     <h3>Language</h3>
-                                    <p>Bahasa Indonesia</p>
+                                    <p>{{$item->language}}</p>
                                 </div>
                             </div>
                             <div class="col-md-4 border-left">
 
-                                <img src="frontend/image/Group 24.png" alt="" class="features-image">
+                                <img src="{{url('frontend/image/Group 24.png')}}" alt="" class="features-image">
                                 <div class="description">
                                     <h3>Food</h3>
-                                    <p>Local Food</p>
+                                    <p>{{$item->local_foods}}</p>
                                 </div>
                             </div>
                         </div>
@@ -112,33 +92,44 @@
                             <tr>
                                 <th width="50%">Date of Deparature</th>
                                 <td width="50%" class="text-right">
-                                    22 Aug, 2019
+                                    {{\Carbon\Carbon::create($item->date_of_depature)->format('F n, Y')}}
                                 </td>
                             </tr>
                             <tr>
-                                <th width="50%">Duratin</th>
+                                <th width="50%">Duration</th>
                                 <td width="50%" class="text-right">
-                                    4D 3N
+                                    {{$item->duration}}
                                 </td>
                             </tr>
                             <tr>
                                 <th width="50%">Type</th>
                                 <td width="50%" class="text-right">
-                                    Open Trip
+                                    {{$item->type}}
                                 </td>
                             </tr>
                             <tr>
                                 <th width="50%">Price</th>
                                 <td width="50%" class="text-right">
-                                    $80,00 / Person
+                                    ${{$item->price }},00 / person
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="join-container">
-                        <a href="{{url('/checkout')}}" class="btn btn-block btn-join-now mt-0 py-3">
+                        @auth
+                            <form action="{{ route('checkout_process',$item->id) }}" method="post">
+                                @csrf
+                                <button class="btn btn-block btn-join-now mt-3 py-2" type="submit">
+                                    Join Now
+                                </button>
+                            </form>
+                        @endauth
+
+                        @guest
+                        <a href="{{route('login')}}" class="btn btn-block btn-join-now mt-0 py-3">
                             Join Now
                         </a>
+                        @endguest
                     </div>
                 </div>
             </div>

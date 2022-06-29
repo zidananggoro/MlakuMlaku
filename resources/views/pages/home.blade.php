@@ -17,7 +17,7 @@ MlakuMlaku
         <br>
         Tidak bisa di lupakan dengan mudah
     </p>
-    <a href="#" class="btn btn-get-started px-4 mt-4">
+    <a href="#popular" class="btn btn-get-started px-4 mt-4">
         Get Started
     </a>
 </header>
@@ -59,54 +59,21 @@ MlakuMlaku
     </section>
     <section class="section-popular-content" id="popularContent">
         <div class="section-popular-travel row justify-content-center">
+            @foreach ($items as $item)
             <div class="col-sm-5 col-md-3 col-lg-2">
                 <div class="card-travel text-center d-flex flex-column"
-                    style="background-image: url(frontend/image/Mask\ Group\ 2.png);">
-                    <div class="travel-country">INDONESIA</div>
-                    <div class="div-travel-location">DERATAN, BALI</div>
+                    style="background-image: url('{{$item->galleries->count() ? Storage::url($item->galleries->first()->image) : ''  }}');">
+                    <div class="travel-country">{{$item->location}}</div>
+                    <div class="div-travel-location">{{$item->title}}</div>
                     <div class="travel-button mt-auto">
-                        <a href="{{route('detail')}}" class="btn btn-travel-details px-4">
+                        <a href="{{route('detail', $item->slug )}}" class="btn btn-travel-details px-4">
                             View Details
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-5 col-md-3 col-lg-2">
-                <div class="card-travel text-center d-flex flex-column"
-                    style="background-image: url(frontend/image/Mask\ Group\ 3.png);">
-                    <div class="travel-country">INDONESIA</div>
-                    <div class="div-travel-location">BROMO, MALANG</div>
-                    <div class="travel-button mt-auto">
-                        <a href="{{route('detail')}}" class="btn btn-travel-details px-4">
-                            View Details
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-5 col-md-3 col-lg-2">
-                <div class="card-travel text-center d-flex flex-column"
-                    style="background-image: url(frontend/image/Mask\ Group\ 4.png);">
-                    <div class="travel-country">INDONESIA</div>
-                    <div class="div-travel-location">NUSA PENIDA, BALI</div>
-                    <div class="travel-button mt-auto">
-                        <a href="{{route('detail')}}" class="btn btn-travel-details px-4">
-                            View Details
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-5 col-md-3 col-lg-2">
-                <div class="card-travel text-center d-flex flex-column"
-                    style="background-image: url(frontend/image/Mask\ Group\ 5.png);">
-                    <div class="travel-country">INDONESIA</div>
-                    <div class="div-travel-location">TUREN, MALANG</div>
-                    <div class="travel-button mt-auto">
-                        <a href="{{route('detail')}}" class="btn btn-travel-details px-4">
-                            View Details
-                        </a>
-                    </div>
-                </div>
-            </div>
+            @endforeach
+           
         </div>
     </section>
 
@@ -203,7 +170,7 @@ MlakuMlaku
                     <a href="#" class="btn btn-need-help px-4 mt-4 mx-1">
                         I Need Help
                     </a>
-                    <a href="#" class="btn btn-get-started px-4 mt-4 mx-1">
+                    <a href="{{route('register')}}" class="btn btn-get-started px-4 mt-4 mx-1">
                         Get Started
                     </a>
                 </div>
